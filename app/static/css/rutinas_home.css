@@ -1,0 +1,46 @@
+.col {
+  background-color: rgb(233, 198, 214);
+  text-align: center;
+  border-radius: 10px;
+  font-size: 20px;
+  padding: 5px;
+}
+
+.ej {
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+  }
+  
+h1 {
+    text-align: center;
+    font-size: 40px;
+}
+
+.btn-light {    
+    /* Para centrar el boton */
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 25px;
+    font-size: 20px;
+
+    background-color: rgba(0, 160, 21, 0.425);
+  }
+
+  .personaliza {    
+    /* Para centrar el boton */
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 25px;
+    font-size: 25px;
+    
+    color: rgb(255, 255, 255);
+    background-color: rgba(146, 0, 80, 0.699);
+
+    border-radius: 5px;
+    border-width: 0px;
+    padding: 8px;
+  }

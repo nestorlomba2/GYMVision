@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    
+
+<head>
+  <div class="profile">
+    <div class="profile-image">
+      <img class="profile_picture" src="{{request.user.avatar.url}}" alt="Photo" style='height: 50%; width: 50%; object-fit: contain'>
+    </div>
+    <div class="profile-user-settings">
+      <div class="d-flex justify-content-between header">
+        <h1 class="profile-user-name block">{{request.user}}</h1>
+        {% if request.user == user %}
+        <a href="{% url 'update_user' %}"><img class="setting-icon block" src="{% static 'images/settings.svg'%}"></a>
+        <a href="{% url 'calendar' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="rgb(146, 0, 80)" class="calendar-icon block" viewBox="0 0 16 16"> <path d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1z"/> <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+           </svg>
+        </a>
+        {% endif %}
+      </div>
+      <div class="profile-stats">
+        <ul>
+          <li><span class="profile-stat-count">{{request.user.points}}</span> Puntos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {% block sidebar %} 
+    <meta charset="utf-8">
+    <div class="menu-body">
+      <ul class="select">
+        <li> <a class="sidebar active" href="{% url 'retos' request.user.id %}">Retos</a></li>
+        <li> <a class="sidebar" href="{% url 'mis_rutinas' request.user.id %}">Rutinas</a></li>
+        <li> <a class="sidebar" href="{% url 'logros' request.user.id %}">Logros</a></li>
+      </ul>
+    </div>
+  {% endblock %}
+</head>
+
+<body>
+  <div id="content">
+      {% block content %}{% endblock %}
+  </div>
+</body>

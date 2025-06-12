@@ -1,0 +1,109 @@
+
+body,
+		html {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			/*background: rgb(255, 255, 255) !important;*/
+            font-family: "Open Sans", Arial, Helvetica, sans-serif;
+            background-repeat:no-repeat;
+            background-position: center; 
+            background-size: 175%;
+            background-image: url("/static/images/logo_bien.png");
+		}
+		.user_card {
+			width: 400px;
+			margin-top: auto;
+			margin-bottom: auto;
+			background: rgb(216, 221, 233);
+			position: relative;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			padding: 10px;
+            font-family: "Open Sans", Arial, Helvetica, sans-serif;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			-webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			-moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			border-radius: 5px;
+
+		}
+        .arrow-back{
+            fill: rgb(146, 0, 80);
+
+        }
+        .arrow-back:hover{
+            fill: white;
+
+        }
+		.form_container {
+			margin-top: 20px;
+		}
+
+		#form-title{
+			color: rgb(146, 0, 80);
+			
+		}
+
+		.update_btn {
+			width: 100%;
+			background: rgb(146, 0, 80) !important;
+			color: white !important;
+		}
+		.update_btn:focus {
+			box-shadow: none !important;
+			outline: 0px !important;
+		}
+        .cancel_btn {
+			width: 100%;
+			background: rgb(146, 0, 80) !important;
+			color: white !important;
+		}
+		.cancel_btn:focus {
+			box-shadow: none !important;
+			outline: 0px !important;
+		}
+		.login_container {
+			padding: 0 2rem;
+		}
+
+        input[type=text], input[type=password], input[type=email] {
+            width: 100%;
+            padding: 5px;
+            margin: 3px 0 22px 0;
+            border-radius:4px;
+            border:unset;
+            background: white;
+            box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+            rgba(60, 66, 87, 0.16) 0px 0px 0px 1px, 
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
+            rgba(0, 0, 0, 0) 0px 0px 0px 0px;
+        }
+        .label-class{
+            font-family: "Open Sans", Arial, Helvetica, sans-serif;
+            color: #262626;
+            font-size: 18px;
+            font-weight: 600;
+            display: block;
+            padding-bottom: 0px;
+            color: rgb(146, 0, 80);
+        }
+		.input_user,
+		.input_pass:focus {
+			box-shadow: none !important;
+			outline: 0px !important;
+		}
+        .row{
+            margin-bottom: 3px;
+            padding-bottom: 7px;
+        }
+
+		#messages{
+			background-color: grey;
+			color: #fff;
+			padding: 10px;
+			margin-top: 10px;
+		}

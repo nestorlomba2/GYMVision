@@ -1,0 +1,47 @@
+.card-block {
+    font-size: 1em;
+    position: relative;
+    margin: 10px; 
+}
+
+.card {
+    font-size: 1em;
+    overflow: hidden;
+    padding: 5;
+    border: rgba(0, 160, 21, 0.425);
+    border-style:solid;
+    border-width: 5px;
+    border-radius: .28571429rem;
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    margin-top:20px;
+
+    background-color: rgba(255, 255, 255, 0.397);
+}
+
+span {
+    color:blue;
+}
+
+progress {
+    border-radius: 7px; 
+    width: 80%;
+    height: 17px;
+    box-shadow: 1px 1px 4px rgba( 0, 0, 0, 0.2 );
+  }
+  progress::-webkit-progress-bar {
+    background-color: rgb(233, 233, 233);
+    border-radius: 7px;
+  }
+  progress::-webkit-progress-value {
+    background-color: rgba(0, 160, 21, 0.425);
+    border-radius: 4px;
+  }
+  progress::-moz-progress-bar {
+    /* style rules */
+  }
+
+  .btn-sm {
+    margin-bottom: 16px;
+    background-color: rgb(146, 0, 80);
+    border-color: rgb(146, 0, 80);
+}

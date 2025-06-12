@@ -1,0 +1,151 @@
+{% extends 'perfil.html' %}
+
+{% block sidebar %} 
+<meta charset="utf-8">
+<div class="menu-body">
+  <ul class="select">
+    <li> <a class="sidebar" href="{% url 'retos' request.user.id %}">Retos</a></li>
+    <li> <a class="sidebar" href="{% url 'mis_rutinas' request.user.id %}">Rutinas</a></li>
+    <li> <a class="sidebar active" href="{% url 'logros' request.user.id %}">Logros</a></li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/logros.css' %}">
+
+    <!-- SweetAlert  -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.8.0/sweetalert2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.8.0/sweetalert2.min.js"></script>
+
+
+    {% for logro in logros %}    
+        <div class="container">
+            <div class="card float-left">
+                <table width=90% style="margin: 0 auto">
+                    <tr>
+                        <div class="card-block"> 
+                            {% for descripcion in descripciones %}                               
+                                {% if descripcion == logro.descripcion_logro %}
+                                    <td><h4 id="{{logro.descripcion_logro}}_card" class="card-title">{{ descripcion.nombre }}</h4>  
+                                        {% if logro.nivel == 1 %}
+                                            <p class="card-title">{{ descripcion.nivel1 }}</p>    
+                                        {% endif %}
+                                        {% if logro.nivel == 2 %}
+                                            <p class="card-title">{{ descripcion.nivel2 }}</p>    
+                                        {% endif %}
+                                        {% if logro.nivel == 3 %}
+                                            <p class="card-title">{{ descripcion.nivel3 }}</p>    
+                                        {% endif %}
+                                        
+                                        {% if logro.en_curso == 0 %}
+                                            <button class="btn btn-primary btn-sm" id='{{logro.descripcion_logro}}_button' onclick="reto('{{logro.descripcion_logro}}', '{{descripcion.tiempo}} ')">Obten 5 puntos</button>                  
+                                        {% else %}
+                                            <button disabled class="btn btn-primary btn-sm" id='{{logro.descripcion_logro}}_button'>En curso</button>                  
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                                                            
+                            <td>
+                                <div id="{{logro.descripcion_logro}}_estrellas" class="estrellas">
+                                <p id="{{logro.descripcion_logro}}" style="display:none"> {{ logro.nivel }} </p>
+
+                                {% if logro.nivel == 1 %}
+                                    <img src="{% static 'images/estrella.png' %}" width="50px" height="50px"> </div>
+                                {% endif %}
+
+                                {% if logro.nivel == 2 %}
+                                    <img src="{% static 'images/estrella.png' %}" width="50px" height="50px"> 
+                                    <img src="{% static 'images/estrella.png' %}" width="50px" height="50px"> </div>  
+                                {% endif %}
+
+                                {% if logro.nivel == 3 %}
+                                    <img src="{% static 'images/estrella.png' %}" width="50px" height="50px"> 
+                                    <img src="{% static 'images/estrella.png' %}" width="50px" height="50px"> 
+                                    <img src="{% static 'images/estrella.png' %}" width="50px" height="50px"> </div>
+                                {% endif %}
+
+                            </td>
+                        </div>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+
+     <p></p>
+    <button class="btn btn-dark" onclick=redirect()>Atrás</button>
+
+    {% csrf_token %}
+
+    <script>
+
+        function redirect() {
+            window.open("{% url 'home' %}", "_self");
+        }
+
+        function reto(ejercicio, tiempo) {
+            swal({
+                title: "¿Seguro que quieres afrontar el desafío?",
+                type: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '¡Adelante!',
+                cancelButtonText: "En otro momento"
+            }).then((result) => {
+                console.log(result);
+                if (result.value) {
+                    swal({
+                        title: "¡Tienes un nuevo reto disponible!",
+                        type: 'success'
+                    }).then(() => { 
+                        var mes = 0;
+                        var semanas = 0;
+                        var dias = 0;
+
+                        var num = tiempo.split(' ')[0];
+                        var d_s_m = tiempo.split(' ')[1];
+
+                        if (d_s_m == 'mes') {
+                            mes = num;
+                        } else if (d_s_m == 'día') {
+                            dias = num;
+                        } else {
+                            semanas = num;
+                        }
+
+                        var contador = (document.getElementById(ejercicio).textContent);    // Obtengo el valor del contador                   
+                        var logro = (document.getElementById(ejercicio+"_card").textContent); 
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/actualizar_logro/',
+                            data: {'descripcion_logro':ejercicio, 'user_id':"{{user_id}}", 'en_curso': 1,
+                            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() },
+                            success: function(msg){ 
+                                window.open("{% url 'retos' request.user.id %}", "_self")
+                            }
+                        });
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/crear_reto/',
+                            data: {'logro':ejercicio, 'nivel': contador, 'dias': dias, 'semanas':semanas, 'mes':mes, 'user_id':"{{user_id}}",
+                            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() },
+                            success: function(msg){
+                                window.open("{% url 'retos' request.user.id %}", "_self")
+                            }
+                        });
+                    })
+                } else {
+                    swal("Esperamos que lo intentes pronto","", "error");
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

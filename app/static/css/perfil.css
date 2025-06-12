@@ -1,0 +1,118 @@
+body{
+    font-family: "Open Sans", Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    background-color: #fafafa;
+    padding-bottom: 3rem;
+}
+
+.profile{
+    padding: 20px;
+}
+
+.profile-image{
+    float:left;
+    width: calc(33.333%-1rem);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 3rem;
+}
+
+.profile-image img {
+    border-radius: 50%;
+}
+
+.profile-user-settings, .profile-stats{
+    float:left;
+    width: calc(66.666%-2rem);
+}
+
+.profile-user-settings{
+    margin-top: 1.1rem;
+}
+
+.profile-user-name{
+    font-size: 3.0rem;
+    font-weight: 300;
+}
+img.setting-icon{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 25%;
+    margin-right: 0.5rem;
+}
+svg.calendar-icon{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 25%;
+    margin-right: 0.5rem;
+    fill:rgba(146, 0, 80, 0.452) !important;
+}
+
+.profile-stats{
+    margin-top: 2.3rem;
+}
+
+.profile-stats li{
+    display: inline-block;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    margin-right: 4rem;
+    cursor:pointer;
+}
+.row {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content:flex-start;
+
+  }
+  .block {
+    width: 50%;
+  }
+@supports (display: grid){
+    .profile{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: repeat(3,auto);
+        grid-column-gap: 3rem;
+        align-items: center;
+    }
+}
+
+.profile-stat-count{
+    background-color: rgba(146, 0, 80, 0.452);
+    padding:5px 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.menu-body{
+    padding: 20px;
+    text-align:center;
+}
+
+.select {
+    list-style-type: none;
+    overflow: hidden;
+    font-size: 20px;
+    background-color: rgba(146, 0, 80, 0.795);
+  }
+  
+  .sidebar {
+    float: left;    
+    width:30%;
+  }
+  
+  li a {
+    display: block;
+    color: rgb(255, 246, 251);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  .active {
+    background-color: rgb(110, 2, 62);
+  }

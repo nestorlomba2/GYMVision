@@ -1,0 +1,22 @@
+input {
+  background-color: rgba(41, 180, 60, 0.171);
+  border-color: rgba(41, 180, 60, 0.171);
+  border-radius: 5px;
+  padding: 3px;
+  display: block;
+  margin-bottom: 1%;
+  margin-top: 1%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#form-card {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2%;
+}
+
+#form-title {
+  text-align: center;
+}

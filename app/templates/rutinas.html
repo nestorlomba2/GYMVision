@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/rutinas.css' %}">
+
+    <h1>Selecciona los ejercicios que desees incluir:</h1>
+    <td class="container">
+        <table width=90% style="margin: 0 auto">
+            <tr>
+                <td><label class="ejercicio-checkbox"><img id="1" src="{% static 'images/sentadilla.gif' %}" width="200" height="150"></label>
+                    <p hidden id="input1"> Repeticiones por serie <input type="number"  value="10" min="1" max="100" value="20" onchange="cambiarRepeticiones(1)"></p></td>
+                <td><label class="ejercicio-checkbox"><img id="2" src="{% static 'images/zancadas.gif' %}" width="200" height="150"></label>
+                    <p hidden id="input2"> Repeticiones por serie <input type="number" value="10" min="1" max="100" value="20" onchange="cambiarRepeticiones(2)"></p></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><label class="ejercicio-checkbox"><img id="3" src="{% static 'images/plancha.gif' %}" width="200" height="150"></label>
+                    <p hidden id="input3"> Repeticiones por serie <input type="number" value="10" min="1" max="100" value="20" onchange="cambiarRepeticiones(3)"></p></td>
+                <td><label class="ejercicio-checkbox"><img id="4" src="{% static 'images/biceps_curl.gif' %}" width="200" height="150"></label>
+                    <p hidden id="input4"> Repeticiones por serie <input type="number" value="10" min="1" max="100" value="20" onchange="cambiarRepeticiones(4)"></p></td>
+                <td><label class="ejercicio-checkbox"><img id="5" src="{% static 'images/extension_triceps.gif' %}" width="200" height="150"></label>
+                    <p hidden id="input5"> Repeticiones por serie <input type="number" value="10" min="1" max="100" value="20" onchange="cambiarRepeticiones(5)"></p></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><label class="ejercicio-checkbox"><img id="6" src="{% static 'images/elevaciones_frontales.gif' %}" width="200" height="150"></label>
+                    <p hidden id="input6"> Repeticiones por serie <input type="number" value="10" min="1" max="100" value="20" onchange="cambiarRepeticiones(6)"></p></td>
+                <td><label class="ejercicio-checkbox"><img id="7" src="{% static 'images/elevaciones_laterales.gif' %}" width="200" height="150"></label>
+                    <p hidden id="input7"> Repeticiones por serie <input type="number" value="10" min="1" max="100" value="20" onchange="cambiarRepeticiones(7)"></p></td>
+            </tr>
+            <tr>
+                <td><p>Número de series</p><input type="number" id="series" value="3" min="1" max="100"></td>  
+                <td><p>Nombre de la rutina</p>
+                    <input type="text" id="name" value="Nombre por defecto"/>
+                </td>  
+                <td><button class="personaliza" onclick="correccion()">Listo!</button></td>       
+            </tr>  
+
+            <tr>
+                <td></td>
+                <td><span id="formError"></span></td>
+                <td><span id="exercisesError"></span></td>
+            </tr>
+
+        </table>
+    </td>
+
+    <p></p>
+    <button class="btn btn-dark" onclick="history.back()">Atrás</button>
+
+    <form action="" id="form_rutina" method="POST">
+        {% csrf_token %}
+        <input type="hidden" type="text" id="form_rutina_name" name="nombre" value="">
+        <input type="hidden" type="text" id="form_rutina_series" name="series" value="">
+        <input type="hidden" type="text" id="form_rutina_user_id" name="user_id" value="{{user_id}}">
+
+        <input type="hidden" type="submit" value="Post"/>
+    </form>
+
+
+    <script>
+            
+        var websocket;
+        var userId = "{{user_id}}";
+        var arrayEjercicios = [];
+        var arrayRepeticiones = [];
+
+        window.onload = function () {
+
+            //wesocket connection and listeners
+            var loc = window.location;
+            var wsStart = 'ws://';
+
+            if (loc.protocol == 'https:') {
+                wsStart = 'wss://';
+            }
+
+            var websocketURL = '/correccion/ws/'+userId+'/';
+
+            var endPoint = wsStart + loc.host + websocketURL;
+
+            console.log('endPoint: ', endPoint);
+
+            websocket = new WebSocket(endPoint);
+
+            websocket.addEventListener('open', (e) => {
+                console.log('Connection Opened!');
+            });
+            websocket.addEventListener('message', (e) => {
+                //console.log('Message received: ', e.data);
+            });
+            websocket.addEventListener('close', (e) => {
+                console.log('Connection Closed!');
+            });
+            websocket.addEventListener('error', (e) => {
+                console.log('Error Occured!');
+            });
+
+            if ('{{ error }}' != '') {              
+                document.getElementById('name').value = '{{ nombre }}';
+                document.getElementById('name').style.backgroundColor = '#aa00008c';
+                document.getElementById('name').style.borderColor  = '#aa00008c';
+
+                $('#formError').text('{{ error }}');
+            }
+        }
+
+
+        jQuery(function ($) {
+            $(".ejercicio-checkbox").on("click", function (e) {
+
+                var seleccionado = $(this).find('img').attr('id');
+                var repeticiones = $(this).next().val();
+
+                if ($(this).hasClass('ejercicio-checkbox-checked')) {
+                    $(this).removeClass('ejercicio-checkbox-checked'); 
+
+                    // Para seleccionar el siguiente elemento a la imagen que siempre sera el input, y ocultarlo
+                    document.getElementById($(this).next().attr('id')).setAttribute("hidden", "hidden");   
+
+                    // Elimina del array el ejercicio deseleccionado
+                    arrayEjercicios = $.grep(arrayEjercicios, function (value) {
+                        return value != seleccionado;
+                    });
+
+                    // Indexamos por ID del ejercicio, y ponemos 0 en las repeticiones 
+                    arrayRepeticiones[seleccionado] = 0;
+
+                } else {
+                    if (arrayEjercicios.indexOf(seleccionado) === -1) {
+                        arrayEjercicios.push(seleccionado);
+
+                        // Metemos el numero de repeticiones
+                        var divNode = document.getElementById($(this).next().attr('id'));
+                        var inputNodes = divNode.getElementsByTagName('INPUT');
+                        var inputNode = inputNodes[0];
+                        arrayRepeticiones[seleccionado] = inputNode.value;
+                    }
+
+                    $(this).addClass('ejercicio-checkbox-checked');
+                    
+                    // Para seleccionar el siguiente elemento a la imagen que siempre sera el input, y mostrarlo           
+                    document.getElementById($(this).next().attr('id')).removeAttribute("hidden");   
+                }
+
+                e.preventDefault();
+            });
+        });
+   
+        function cambiarRepeticiones(ej) {
+            var divNode = document.getElementById('input'+ej);
+            var inputNodes = divNode.getElementsByTagName('INPUT');
+            var inputNode = inputNodes[0];
+            arrayRepeticiones[ej] = inputNode.value;
+        }
+
+        function correccion() {
+            
+            if(arrayEjercicios.length == 0) {
+                $('#exercisesError').text('Debes seleccionar al menos un ejercicio');
+            } else {
+
+                var nombre = $('#name').val();
+                var series = $('#series').val();
+
+                try {
+                    websocket.send(JSON.stringify({
+                        'control': 'info',
+                        'datos': {
+                            'ejercicios':arrayEjercicios,
+                            'repeticiones':arrayRepeticiones,
+                            'series':series
+                        }
+                    }));
+
+                } catch (e) {
+                    console.log("error");
+                    console.log(e);
+                }
+
+                $('#form_rutina_name').val(nombre);
+                $('#form_rutina_series').val(series);
+                $('#form_rutina_user_id').val("{{user_id}}");
+
+                var formulario = document.getElementById('form_rutina');
+
+                // Esta conversion es necearia para que en views.py podamos obtener los datos como array
+                for (ejercicio in arrayEjercicios) {
+                    formulario.innerHTML += '<input  type="hidden" type="text" name="ejercicios" value="' + arrayEjercicios[ejercicio] + '"/>';
+                }
+
+                for (var i = 0; i < arrayRepeticiones.length; i++) {
+                    if (arrayRepeticiones[i] == undefined) arrayRepeticiones[i] = 0;
+                    formulario.innerHTML += '<input  type="hidden" type="text" name="repeticiones" value="' + arrayRepeticiones[i] + '"/>';
+                }
+
+                document.getElementById("form_rutina").submit(); 
+            }
+        }
+
+    </script>
+
+{% endblock %}

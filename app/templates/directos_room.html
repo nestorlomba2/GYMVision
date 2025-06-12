@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/directos_room.css' %}"> 
+
+    <header class="toolbar js-toolbar">
+        <button id="btn-toggle-audio" class="enable-btn" disabled="true" style="visibility: hidden;">🎙️</button>
+        <button id="btn-toggle-video" class="enable-btn" disabled="true" style="visibility: hidden;">🎥</button>
+        <button class="enable-btn js-toggle-chat">💬</button>
+    </header>
+
+    <div class="main-grid-container">
+        <div class="chat page js-page js-chat">
+            <div class="chatArea">
+                <ul id="message-list" class="messages js-messages"></ul>
+            </div>
+            <input id="msg" class="inputMessage js-inputMessage" placeholder="...">
+        </div>
+        <div id="video-container" class="main">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var username = "{{request.user.username}}";
+        var roomName = "{{room}}";
+        var userType = "{{request.user.get_tipo_display}}";
+    </script>
+    <script type="text/javascript" src="{% static 'js/directos_room.js' %}"></script>
+{% endblock %}

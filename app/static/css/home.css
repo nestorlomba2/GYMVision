@@ -1,0 +1,62 @@
+.personaliza {    
+  /* Para centrar el boton */
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25px;
+  font-size: 25px;
+  
+  color: rgb(255, 255, 255);
+  background-color:  rgba(146, 0, 80, 0.795);
+  border-radius: 5px;
+  border-width: 0px;
+  padding: 8px;
+}
+
+.home {
+  padding: 20px;
+  margin: 20px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  
+  width: 100%;
+  height: 100%;
+  background-repeat:no-repeat;
+  background-position: center; 
+  background-size: 100%;
+}
+
+h2 { 
+  margin-top: 25px;
+  color: #111; 
+  font-family: 'Open Sans', sans-serif; 
+  font-size: 20px; 
+  font-weight: 300; 
+  line-height: 32px; 
+  text-align: center; 
+}
+
+.highlight-front a{ 
+  font-size: 25px;
+  color: rgb(0, 0, 0);
+  display:block;
+  text-align: center;
+}
+
+.logout{ 
+  display:block;
+  margin-left: auto;
+  margin-right: auto;
+
+  margin-top: 25px;
+  font-size: 25px;
+  
+  color: rgb(0, 0, 0);
+  background-color:  rgba(190, 190, 190, 0.425);
+
+  border-radius: 5px;
+  border-width: 0px;
+  padding: 8px;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/calendar.css' %}">
+  <title>Calendario</title>
+</head>
+<body>
+    <div class="clearfix">
+        <a class="btn btn-info left" href="{% url 'retos' request.user.id %}"> Atrás </a>
+        <a class="btn btn-info left" href="{% url 'calendar' %}?{{ prev_month }}"> Anterior Mes </a>
+        <a class="btn btn-info right" href="{% url 'calendar' %}?{{ next_month }}"> Siguiente Mes </a>
+        <a class="btn btn-info right" href="{% url 'event_new' %}"> Nuevo Evento </a>
+
+    </div>
+
+{{calendar}}
+
+
+</body>
+</html>

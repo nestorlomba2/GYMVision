@@ -1,0 +1,501 @@
+# Metemos todos los ejercicios
+- model: app.ejercicio
+  fields:
+    id: 1
+    nombre: "Sentadilla"
+
+- model: app.ejercicio
+  fields:
+    id: 2
+    nombre: "Zancada"
+
+- model: app.ejercicio
+  fields:
+    id: 3
+    nombre: "Plancha"
+
+- model: app.ejercicio
+  fields:
+    id: 4
+    nombre: "Curl de bíceps"
+
+- model: app.ejercicio
+  fields:
+    id: 5
+    nombre: "Extensión de tríceps"
+
+- model: app.ejercicio
+  fields:
+    id: 6
+    nombre: "Elevaciones frontales de brazos"
+
+- model: app.ejercicio
+  fields:
+    id: 7
+    nombre: "Elevaciones laterales de brazos"
+
+# Creamos las 3 rutinas por defecto
+- model: app.rutinapordefecto
+  pk: 1
+  fields:
+    nombre: "Principiante"
+    series: 3
+
+- model: app.rutinapordefecto
+  pk: 2
+  fields:
+    nombre: "Intermedio"
+    series: 3
+
+- model: app.rutinapordefecto
+  pk: 3
+  fields:
+    nombre: "Experto"
+    series: 3
+
+# Ejercicios rutina 1
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 1
+    ejercicio: 1
+    repeticiones: 10
+
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 1
+    ejercicio: 2
+    repeticiones: 10
+
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 1
+    ejercicio: 3
+    repeticiones: 10
+
+# Ejercicios rutina 2
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 2
+    ejercicio: 3
+    repeticiones: 10
+
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 2
+    ejercicio: 4
+    repeticiones: 10
+
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 2
+    ejercicio: 5
+    repeticiones: 10
+
+# Ejercicios rutina 3
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 3
+    ejercicio: 5
+    repeticiones: 10
+
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 3
+    ejercicio: 6
+    repeticiones: 10
+
+- model: app.ejerciciorutinapordefecto
+  fields:
+    rutina: 3
+    ejercicio: 7
+    repeticiones: 10
+
+# Inicializamos los datos de los logros y retos
+- model: app.descripcionlogro
+  pk: 1
+  fields:
+    nombre: 'As de las sentadillas'
+    nivel1: 'Deberás hacer 240 sentadillas en un mes'
+    nivel2: 'Deberás hacer 560 sentadillas en un mes'
+    nivel3: 'Deberás hacer 1400 sentadillas en un mes'
+    tiempo: "1 mes"
+
+- model: app.descripcionreto
+  pk: 1
+  fields:
+    descripcion_logro: 1
+    nivel1: '240 sentadillas en un mes'
+    nivel2: '560 sentadillas en un mes'
+    nivel3: '1400 sentadillas en un mes'
+    valor1: 240
+    valor2: 560
+    valor3: 1400
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 1
+      descripcion_reto: 1
+
+
+
+
+- model: app.descripcionlogro
+  pk: 2
+  fields:
+    nombre: 'Plancha humana'
+    nivel1: 'Tu objetivo será llegar a conseguir aguantar 30 segundos en una plancha de manera ininterrumpida'
+    nivel2: 'Tu objetivo será llegar a conseguir aguantar 1:30 minutos en una plancha de manera ininterrumpida'
+    nivel3: 'Tu objetivo será llegar a conseguir aguantar 4 minutos en una plancha de manera ininterrumpida'
+    tiempo: "1 semana"    
+
+- model: app.descripcionreto
+  pk: 2
+  fields:
+    descripcion_logro: 2
+    nivel1: 'Tienes 1 semana para aguantar 30 segundos en plancha'
+    nivel2: 'Tienes 1 semana para aguantar 1:30 minutos en plancha'
+    nivel3: 'Tienes 1 semana para aguantar 4 minutos en plancha'
+    valor1: 30
+    valor2: 90
+    valor3: 240
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 3
+      descripcion_reto: 2
+
+
+
+
+- model: app.descripcionlogro
+  pk: 3
+  fields:
+    nombre: '¿Hombre o pájaro?'
+    nivel1: 'Tienes 1 semana para realizar 40 elevaciones laterales. ¿Te puntas?'
+    nivel2: 'Tienes 1 semana para realizar 75 elevaciones laterales. ¿Te puntas?'
+    nivel3: 'Tienes 1 semana para realizar 140 elevaciones laterales. ¿Te puntas?'
+    tiempo: "1 semana"
+    
+- model: app.descripcionreto
+  pk: 3
+  fields:
+    descripcion_logro: 3
+    nivel1: 'Haz 40 elevaciones laterales en 1 semana'
+    nivel2: 'Haz 75 elevaciones laterales en 1 semana'
+    nivel3: 'Haz 140 elevaciones laterales en 1 semana'
+    valor1: 40
+    valor2: 75
+    valor3: 140
+    
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 7
+      descripcion_reto: 3
+
+    
+      
+
+- model: app.descripcionlogro
+  pk: 4
+  fields:
+    nombre: 'Hombros de acero'
+    nivel1: '¿Podrás hacer 40 elevaciones frontales en una semana...? Te retamos!!'
+    nivel2: '¿Podrás hacer 75 elevaciones frontales en una semana...? Te retamos!!'
+    nivel3: '¿Podrás hacer 140 elevaciones frontales en una semana...? Te retamos!!'
+    tiempo: "1 semana"
+    
+- model: app.descripcionreto
+  pk: 4
+  fields:
+    descripcion_logro: 4
+    nivel1: 'Haz 40 elevaciones frontales en 1 semana'
+    nivel2: 'Haz 75 elevaciones frontales en 1 semana'
+    nivel3: 'Haz 140 elevaciones frontales en 1 semana'
+    valor1: 40
+    valor2: 75
+    valor3: 140
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 6
+      descripcion_reto: 4
+
+
+
+
+- model: app.descripcionlogro
+  pk: 5
+  fields:
+    nombre: 'Brazos de película 1'
+    nivel1: 'Deberás realizar 40 bíceps en una semana'
+    nivel2: 'Deberás realizar 75 bíceps en una semana'
+    nivel3: 'Deberás realizar 140 bíceps en una semana'
+    tiempo: "1 semana"
+
+- model: app.descripcionreto
+  pk: 5
+  fields:
+    descripcion_logro: 5
+    nivel1: 'Haz 40 bíceps en 1 semana'
+    nivel2: 'Haz 75 bíceps en 1 semana'
+    nivel3: 'Haz 140 bíceps en 1 semana'
+    valor1: 40
+    valor2: 75
+    valor3: 140
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 4
+      descripcion_reto: 5
+
+
+
+
+- model: app.descripcionlogro
+  pk: 6
+  fields:
+    nombre: 'Brazos de película 2'
+    nivel1: 'Deberás realizar 40 tríceps en una semana'
+    nivel2: 'Deberás realizar 75 tríceps en una semana'
+    nivel3: 'Deberás realizar 140 tríceps en una semana'
+    tiempo: "1 semana"
+
+- model: app.descripcionreto
+  pk: 6
+  fields:
+    descripcion_logro: 6
+    nivel1: 'Haz 40 tríceps en 1 semana'
+    nivel2: 'Haz 75 tríceps en 1 semana'
+    nivel3: 'Haz 140 tríceps en 1 semana'
+    valor1: 40
+    valor2: 75
+    valor3: 140
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 5
+      descripcion_reto: 6
+
+
+
+
+- model: app.descripcionlogro
+  pk: 7
+  fields:
+    nombre: '¡Pedazo zancada!'
+    nivel1: 'Tu objetivo será llegar a conseguir 240 zancadas en un mes'
+    nivel2: 'Tu objetivo será llegar a conseguir 560 zancadas en un mes'
+    nivel3: 'Tu objetivo será llegar a conseguir 1400 zancadas en un mes'
+    tiempo: "1 mes"
+
+- model: app.descripcionreto
+  pk: 7
+  fields:
+    descripcion_logro: 7
+    nivel1: '240 zancadas en un mes'
+    nivel2: '560 zancadas en un mes'
+    nivel3: '1400 zancadas en un mes'
+    valor1: 240
+    valor2: 560
+    valor3: 1400
+    
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 2
+      descripcion_reto: 7
+
+
+
+      
+####################################### LPRO days logros #######################################
+- model: app.descripcionlogro
+  pk: 8
+  fields:
+    nombre: 'LPRO days sentadillas'
+    nivel1: 'Deberás hacer 2 sentadillas hoy'
+    nivel2: 'Deberás hacer 4 sentadillas hoy'
+    nivel3: 'Deberás hacer 6 sentadillas hoy'
+    tiempo: "1 día"
+  
+- model: app.descripcionreto
+  pk: 8
+  fields:
+    descripcion_logro: 8
+    nivel1: '2 sentadillas hoy'
+    nivel2: '4 sentadillas hoy'
+    nivel3: '6 sentadillas hoy'
+    valor1: 2
+    valor2: 4
+    valor3: 6
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 1
+      descripcion_reto: 8
+
+
+
+
+- model: app.descripcionlogro
+  pk: 9
+  fields:
+    nombre: 'LPRO days zancadas'
+    nivel1: 'Deberás hacer 2 zancadas hoy'
+    nivel2: 'Deberás hacer 4 zancadas hoy'
+    nivel3: 'Deberás hacer 6 zancadas hoy'
+    tiempo: "1 día"
+
+- model: app.descripcionreto
+  pk: 9
+  fields:
+    descripcion_logro: 9
+    nivel1: '2 zancadas hoy'
+    nivel2: '4 zancadas hoy'
+    nivel3: '6 zancadas hoy'
+    valor1: 2
+    valor2: 4
+    valor3: 6
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 2
+      descripcion_reto: 9
+
+
+
+
+- model: app.descripcionlogro
+  pk: 10
+  fields:
+    nombre: 'LPRO days plancha'
+    nivel1: 'Deberás hacer 10 segundos de plancha hoy'
+    nivel2: 'Deberás hacer 20 segundos de plancha hoy'
+    nivel3: 'Deberás hacer 30 segundos de plancha hoy'
+    tiempo: "1 día"
+
+- model: app.descripcionreto
+  pk: 10
+  fields:
+    descripcion_logro: 10
+    nivel1: '10 segundos de plancha hoy'
+    nivel2: '20 segundos de plancha hoy'
+    nivel3: '30 segundos de plancha hoy'
+    valor1: 10
+    valor2: 20
+    valor3: 30
+    
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 3
+      descripcion_reto: 10
+
+
+
+
+- model: app.descripcionlogro
+  pk: 11
+  fields:
+    nombre: 'LPRO days bíceps'
+    nivel1: 'Deberás hacer 2 curl de bíceps hoy'
+    nivel2: 'Deberás hacer 4 curl de bíceps hoy'
+    nivel3: 'Deberás hacer 6 curl de bíceps hoy'
+    tiempo: "1 día"
+
+- model: app.descripcionreto
+  pk: 11
+  fields:
+    descripcion_logro: 11
+    nivel1: '2 curl de bíceps hoy'
+    nivel2: '4 curl de bíceps hoy'
+    nivel3: '6 curl de bíceps hoy'
+    valor1: 2
+    valor2: 4
+    valor3: 6
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 4
+      descripcion_reto: 11
+
+
+
+
+- model: app.descripcionlogro
+  pk: 12
+  fields:
+    nombre: 'LPRO days tríceps'
+    nivel1: 'Deberás hacer 2 extensiones de tríceps hoy'
+    nivel2: 'Deberás hacer 4 extensiones de tríceps hoy'
+    nivel3: 'Deberás hacer 6 extensiones de tríceps hoy'
+    tiempo: "1 día"
+
+- model: app.descripcionreto
+  pk: 12
+  fields:
+    descripcion_logro: 12
+    nivel1: '2 extensiones de tríceps hoy'
+    nivel2: '4 extensiones de tríceps hoy'
+    nivel3: '2 extensiones de tríceps hoy'
+    valor1: 2
+    valor2: 4
+    valor3: 6
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 5
+      descripcion_reto: 12
+
+
+
+
+- model: app.descripcionlogro
+  pk: 13
+  fields:
+    nombre: 'LPRO days elevaciones frontales de brazos'
+    nivel1: 'Deberás hacer 2 elevaciones frontales de brazos hoy'
+    nivel2: 'Deberás hacer 4 elevaciones frontales de brazos hoy'
+    nivel3: 'Deberás hacer 6 elevaciones frontales de brazos hoy'
+    tiempo: "1 día"
+
+- model: app.descripcionreto
+  pk: 13
+  fields:
+    descripcion_logro: 13
+    nivel1: '2 elevaciones frontales de brazos hoy'
+    nivel2: '4 elevaciones frontales de brazos hoy'
+    nivel3: '6 elevaciones frontales de brazos hoy'
+    valor1: 2
+    valor2: 4
+    valor3: 6
+
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 6
+      descripcion_reto: 13
+
+
+
+
+- model: app.descripcionlogro
+  pk: 14
+  fields:
+    nombre: 'LPRO days elevaciones laterales de brazos'
+    nivel1: 'Deberás hacer 2 elevaciones laterales de brazos hoy'
+    nivel2: 'Deberás hacer 4 elevaciones laterales de brazos hoy'
+    nivel3: 'Deberás hacer 6 elevaciones laterales de brazos hoy'
+    tiempo: "1 día"
+
+- model: app.descripcionreto
+  pk: 14
+  fields:
+    descripcion_logro: 14
+    nivel1: '2 elevaciones laterales de brazos hoy'
+    nivel2: '4 elevaciones laterales de brazos hoy'
+    nivel3: '6 elevaciones laterales de brazos hoy'
+    valor1: 2
+    valor2: 4
+    valor3: 6
+    
+- model: app.ejercicioreto
+  fields:
+      ejercicio: 7
+      descripcion_reto: 14

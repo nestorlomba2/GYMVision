@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/correccion.css'%}">
+    <div class="row">
+        <div class="col-md-auto">
+            <video style="display: none;" class="input_video"></video>
+            <canvas class="output_canvas" width="480px" height="480px"></canvas>
+            <div class="loading">
+            <div class="spinner"></div></div>
+            <div style="display: none" class="control"></div>
+            <div class="button_rack">
+                <button class="btn btn-light" id="stop">Pausar</button> 
+                <button class="btn btn-light" id="start">Seguir</button>
+                <button class="btn btn-light" id="btn_fin_rutina" onclick="location.href='/'">Finalizar rutina</button>
+            </div>
+            <button class="btn btn-dark" id="boton_atras" onclick="history.back()">Atrás</button>
+            <div class="contador"></div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-block"> 
+                    <img id="stickman_gif" src="/static/images/whitegif.png" width="300" height="300"> 
+                    <h4 class="card-title">{{ rutina.nombre }}</h4>  
+                    <p class="negrita">Series restantes: <span id="seriesRestantes">{{ rutina.series }}</span> de {{ rutina.series }}</p>
+                    <div id='{{ rutina.id }}'></div>
+                
+                    {% for ejercicio in ejercicios %}
+                        {% if ejercicio.rutina == rutina %}
+                            <p class="ej ej_id_{{ ejercicio.ejercicio }}">{{ ejercicio }}: {{ ejercicio.repeticiones }}</p>
+                            <script>
+                                var array = document.getElementById('{{ rutina.id }}');
+                                array.innerHTML += ' <input type="hidden" name="ejercicios_{{ rutina.id }}[]" value="{{ ejercicio.ejercicio }}" />'
+                                array.innerHTML += ' <input type="hidden" name="repeticiones_{{ rutina.id }}_{{ ejercicio.ejercicio }}[]" value="{{ ejercicio.repeticiones }}" />'
+                            </script>
+                        {% endif %}
+                    {% endfor %}    
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-block"> 
+                        <h4 class="card-title">
+                            <div class="err_txt err_txt_0">&nbsp</div>
+                            <div class="err_txt err_txt_1">&nbsp</div>
+                            <div class="err_txt err_txt_2">&nbsp</div>
+                        </h4>     
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script>
+        var userId = "{{request.user.id}}";
+    </script>
+
+    <script src="{% static 'js/streaming.js' %}"></script>
+
+{% endblock %}

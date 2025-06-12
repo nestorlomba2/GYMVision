@@ -1,0 +1,143 @@
+{% extends 'perfil.html' %}
+
+{% block sidebar %} 
+    <meta charset="utf-8">
+    <div class="menu-body">
+        <ul class="select">
+            <li> <a class="sidebar" href="{% url 'retos' request.user.id %}">Retos</a></li>
+            <li> <a class="sidebar active" href="{% url 'mis_rutinas' request.user.id %}">Rutinas</a></li>
+            <li> <a class="sidebar" href="{% url 'logros' request.user.id %}">Logros</a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/mis_rutinas.css'%}">
+
+        {% for rutina in rutinas %}
+            <div class="container">
+                <div class="card float-left">
+                    <table width=90% style="margin: 0 auto">
+                        <tr>
+                            <div class="card-block"> 
+                                <td><h4 class="card-title">{{ rutina.nombre }}</h4>  
+                                    <p>Series: {{ rutina.series }}</p> 
+                                    <p>Esta rutina consta de los siguientes {ejercicio: repeticiones}</p>
+                                    <div id='{{ rutina.id }}'></div>
+                                
+                                    {% for ejercicio in ejercicios %}
+                                        {% if ejercicio.rutina == rutina %}
+                                            <p>{{ ejercicio }}: {{ ejercicio.repeticiones }}</p>
+                                            <script>
+                                                var array = document.getElementById('{{ rutina.id }}');
+                                                array.innerHTML += ' <input type="hidden" name="ejercicios_{{ rutina.id }}[]" value="{{ ejercicio.ejercicio }}" />'
+                                                array.innerHTML += ' <input type="hidden" name="repeticiones_{{ rutina.id }}_{{ ejercicio.ejercicio }}[]" value="{{ ejercicio.repeticiones }}" />'
+                                            </script>
+
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <button class="btn btn-primary btn-sm" onclick="correccion('{{ rutina.id }}', '{{ rutina }}', '{{ rutina.series }}')">¡A por ella!</button>                   
+                                    <button class="btn btn-primary btn-sm" onclick="borrar_rutina('{{ rutina.id }}')">Borrar rutina</button>                   
+                                
+                                </td>
+                            </div>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+        
+        {% csrf_token %}
+        
+        <p></p>
+        <button class="btn btn-dark" onclick=redirect()>Atrás</button>
+
+        <script>
+
+            var websocket;
+            var userId = "{{user_id}}";
+            var arrayEjercicios = [];
+            var arrayRepeticiones = [];
+
+            window.onload = function () {
+
+                //wesocket connection and listeners
+                var loc = window.location;
+                var wsStart = 'ws://';
+
+                if (loc.protocol == 'https:') {
+                    wsStart = 'wss://';
+                }
+
+                var websocketURL = '/correccion/ws/'+userId+'/';
+
+                var endPoint = wsStart + loc.host + websocketURL;
+
+                console.log('endPoint: ', endPoint);
+
+                websocket = new WebSocket(endPoint);
+
+                websocket.addEventListener('open', (e) => {
+                    console.log('Connection Opened!');
+                });
+                websocket.addEventListener('message', (e) => {
+                    //console.log('Message received: ', e.data);
+                });
+                websocket.addEventListener('close', (e) => {
+                    console.log('Connection Closed!');
+                });
+                websocket.addEventListener('error', (e) => {
+                    console.log('Error Occured!');
+                });
+            }
+
+            function redirect() {
+                window.open("{% url 'home' %}", "_self");
+            }
+
+            function correccion(rutina_id, rutina, series) {
+                
+                var ejercicios = document.getElementsByName('ejercicios_'+ rutina_id +'[]');
+            
+                for (var i = 0; i < ejercicios.length; i++) {
+                    var ej = ejercicios[i].value;
+                    var repeticiones = document.getElementsByName('repeticiones_'+ rutina_id +'_'+ ej +'[]')[0].value;
+                    arrayEjercicios.push(ej);
+                    arrayRepeticiones[ej] = repeticiones;
+                }
+
+                try {
+                    websocket.send(JSON.stringify({
+                        'control': 'info',
+                        'datos': {
+                            'ejercicios':arrayEjercicios,
+                            'repeticiones':arrayRepeticiones,
+                            'series':series
+                        }
+                    }));
+
+                } catch (e) {
+                    console.log("error");
+                    console.log(e);
+                }
+                    console.log("datos enviados");
+                var url = "/correccion/"+rutina+"/"+userId+"/";
+                window.open(url, "_self"); // "_self" Abre en la misma ventana la corrección
+            }
+
+            function borrar_rutina(rutina_id) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/borrar_rutina/',
+                    data: {'rutina_id': rutina_id,
+                    csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() },
+                    success: function(msg){ 
+                        location.reload();
+                    }
+                });
+            }
+        </script>
+        
+    {% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <button id="get-access">Get access to camera</button>
+    <video autoplay></video>
+    {% load static %}
+    <script src="{% static 'js/streaming.js' %}"></script>
+
+{% endblock %}

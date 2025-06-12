@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+    <link rel="stylesheet" href="../static/css/home.css">
+   
+    <div class="home"> 
+        <div align="center"><img src="../static/images/logo_recortado.jpg" width="400" height="200"></div>
+        <h2 class="monos">Te damos la bienvenida {{request.user.username}}, elige una opción:</h2>    
+        <!-- {{request.user.username}} -->
+        <button style='width:270px;' class="personaliza" onclick="rutinas()">Vamos a las rutinas</button>
+        <button style='width:270px;' class="personaliza" onclick="perfil()">Mi perfil</button>
+        <button style='width:270px;' class="personaliza" onclick="directos()">Clases en directo</button>
+
+        <span class="field-content highlight-front"><a href = "{% url 'logout' %}">Salir</a></span>
+    </div>
+
+    <script>
+        function rutinas() {
+            window.open("{% url 'rutinas_home' %}", "_self");
+        }
+        function perfil() {
+            window.open("{% url 'retos' request.user.id %}", "_self");
+        }
+        function directos() {
+            window.open("{% url 'directos_home' %}", "_self");
+        }
+      </script>
+
+{% endblock %}

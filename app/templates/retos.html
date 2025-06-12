@@ -1,0 +1,156 @@
+{% extends 'perfil.html' %}
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/retos.css'%}">
+
+    {% csrf_token %}
+
+    {% for reto in retos %}
+        {% for descripcion in descripciones %}
+            {% if reto.descripcion_reto == descripcion %}
+                
+                <div class="container">
+                    <div class="card float-left">
+                        <div class="card-block"> 
+
+                            {% if reto.nivel == 1 %}
+                                <h4 class="1" class="card-title">{{ descripcion.nivel1 }}</h4>     
+                            {% endif %}
+
+                            {% if reto.nivel == 2 %}
+                                <h4 class="1" class="card-title">{{ descripcion.nivel2 }}</h4>     
+                            {% endif %}
+
+                            {% if reto.nivel == 3 %}
+                                <h4 class="1" class="card-title">{{ descripcion.nivel3 }}</h4>     
+                            {% endif %}  
+
+                            Fecha de inicio:    <span class='fecha'> {{ reto.inicio }} </span>
+                            Fecha de fin:   <span class='fecha'> {{ reto.fin }} </span>
+                            <p></p>
+
+                            {% for ejercicioReto in ejercicios_reto %} 
+                                {% if ejercicioReto.descripcion_reto == descripcion %}
+                                    {% for reps in repeticiones %}
+                                        {% if ejercicioReto.ejercicio == reps.ejercicio %}
+                                            {% if reto.nivel == 1 %}
+                                                <progress id="progress_{{descripcion}}" max="{{descripcion.valor1}}" value="{{reps.repeticiones}}"> </progress>   
+                                                <p></p>
+                                                <button id="finish_{{descripcion}}" class="btn btn-primary btn-sm" onclick="actualizarLogro('{{ reto.id }}', '{{ descripcion.descripcion_logro }}', '{{ ejercicioReto.ejercicio }}')">Terminar reto</button>
+                                                <p></p>
+                                                <button id="delete_{{descripcion}}" class="btn btn-primary btn-sm" onclick="eliminarRetoCaducado('{{ reto.id }}', '{{ descripcion.descripcion_logro }}', '{{ ejercicioReto.ejercicio }}')">Reto fuera de plazo</button>
+                                            {% endif %}
+
+                                            {% if reto.nivel == 2 %}
+                                                <progress id="progress_{{descripcion}}" max="{{descripcion.valor2}}" value="{{reps.repeticiones}}"> </progress>   
+                                                <p></p>
+                                                <button id="finish_{{descripcion}}" class="btn btn-primary btn-sm" onclick="actualizarLogro('{{ reto.id }}', '{{ descripcion.descripcion_logro }}', '{{ ejercicioReto.ejercicio }}')">Terminar reto</button>
+                                                <p></p>
+                                                <button id="delete_{{descripcion}}" class="btn btn-primary btn-sm" onclick="eliminarRetoCaducado('{{ reto.id }}', '{{ descripcion.descripcion_logro }}', '{{ ejercicioReto.ejercicio }}')">Reto fuera de plazo</button>
+                                            {% endif %}
+
+                                            {% if reto.nivel == 3 %}
+                                                <progress id="progress_{{descripcion}}" max="{{descripcion.valor3}}" value="{{reps.repeticiones}}"> </progress>   
+                                                <p></p>
+                                                <button id="finish_{{descripcion}}" class="btn btn-primary btn-sm" onclick="actualizarLogro('{{ reto.id }}', '{{ descripcion.descripcion_logro }}', '{{ ejercicioReto.ejercicio }}')">Terminar reto</button>
+                                                <p></p>
+                                                <button id="delete_{{descripcion}}" class="btn btn-primary btn-sm" onclick="eliminarRetoCaducado('{{ reto.id }}', '{{ descripcion.descripcion_logro }}', '{{ ejercicioReto.ejercicio }}')">Reto fuera de plazo</button>
+                                            {% endif %} 
+
+
+                                            <script>
+                                                var max = document.getElementById("progress_{{descripcion}}").max;
+                                                var value = document.getElementById("progress_{{descripcion}}").value;
+
+                                                if ('{{reto.is_past_due}}' == 'True') {
+                                                        
+                                                    if ('{{ reto.conseguido }}' == 'None') {    // Si el reto se completo fuera del plazo
+                                                        document.getElementById('finish_{{descripcion}}').style.visibility = 'hidden';
+                                                        document.getElementById('finish_{{descripcion}}').style.display = "none";
+                                    
+                                                    } else {
+                                                        document.getElementById('delete_{{descripcion}}').style.visibility = 'hidden';
+                                                        document.getElementById('delete_{{descripcion}}').style.display = "none";
+                                                    }
+
+                                                } else {
+
+                                                    if (value < max) {  // Oculto todos los botones, estamos en plazo
+                                                        document.getElementById('delete_{{descripcion}}').style.visibility = 'hidden';
+                                                        document.getElementById('delete_{{descripcion}}').style.display = "none";
+                                                        document.getElementById('finish_{{descripcion}}').style.visibility = 'hidden';
+                                                        document.getElementById('finish_{{descripcion}}').style.display = "none";
+
+                                                    } else {
+                                                        
+                                                        // En plazo
+                                                        document.getElementById('delete_{{descripcion}}').style.visibility = 'hidden';
+                                                        document.getElementById('delete_{{descripcion}}').style.display = "none";
+
+                                                        // Si no esta guardada la fecha de conseguido, la guardo
+                                                        if ('{{ reto.conseguido }}' == 'None') {
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: '/actualizar_reto_conseguido/',
+                                                                data: {'id_reto':'{{reto.id}}', 'user_id':"{{user_id}}",
+                                                                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() },
+                                                                success: function(msg){ 
+                                                                    console.log("Actualizar fecha conseguido");
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                }
+
+                                            </script>
+
+                                        {% endif %}  
+                                    {% endfor %}         
+                                {% endif %}  
+                            {% endfor %}  
+
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <p></p>
+    <button class="btn btn-dark" onclick=redirect()>Atrás</button>
+
+    <script>
+
+        function redirect() {
+            window.open("{% url 'home' %}", "_self");
+        }
+
+        function actualizarLogro(id_reto, id_descripcion_logro, ejercicio) {
+
+            $.ajax({
+                type: 'POST',
+                url: '/actualizar_reto_y_logro_conseguidos/',
+                data: {'id_reto':id_reto, 'user_id':"{{user_id}}", 'id_descripcion_logro': id_descripcion_logro, 'nombre_ejercicio': ejercicio,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() },
+                success: function(msg){ 
+                    window.open("{% url 'logros' request.user.id %}", "_self")
+                }
+            });
+        }
+
+        function eliminarRetoCaducado (id_reto, id_descripcion_logro, ejercicio) {
+            $.ajax({
+                type: 'POST',
+                url: '/actualizar_reto_y_logro_caducados/',
+                data: {'id_reto': id_reto, 'user_id':"{{user_id}}", 'id_descripcion_logro': id_descripcion_logro, 'nombre_ejercicio': ejercicio,
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() },
+                success: function(msg){ 
+                    window.open("{% url 'logros' request.user.id %}", "_self")
+                }
+            });
+        }
+
+    </script>
+
+{% endblock %}

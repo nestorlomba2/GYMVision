@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% block content %}
+    <link rel="stylesheet" href="../static/css/rutinas_home.css">
+
+    <h1>Selecciona tu nivel</h1>
+    <td class="container">
+        <table width=90% style="margin: 0 auto">
+            <tr>
+                <td class="col">Principiante</td>
+                <td class="col">Intermedio</td>
+                <td class="col">Experto</td>
+            </tr>
+            <tr>
+                <td class="ej"><img src="../static/images/sentadilla.gif" width="200" height="150"></td>
+                <td class="ej"><img src="../static/images/plancha.gif" width="200" height="150"></td>
+                <td class="ej"><img src="../static/images/extension_triceps.gif" width="200" height="150"></td>
+            </tr>        
+            <tr>
+                <td class="ej"><img src="../static/images/zancadas.gif" width="200" height="150"></td>
+                <td class="ej"><img src="../static/images/biceps_curl.gif" width="200" height="150"></td>
+                <td class="ej"><img src="../static/images/elevaciones_frontales.gif" width="200" height="150"></td>
+            </tr>
+            <tr>
+                <td class="ej"><img src="../static/images/plancha.gif" width="200" height="150"></td>
+                <td class="ej"><img src="../static/images/extension_triceps.gif" width="200" height="150"></td>
+                <td class="ej"><img src="../static/images/elevaciones_laterales.gif" width="200" height="150"></td>
+            </tr>
+            <tr>
+                <td><button id="corregir" class="btn btn-light" onclick="correccion(1)">Empecemos!!!</button></td>          
+                <td><button id="corregir" class="btn btn-light" onclick="correccion(2)">Manos a la obra!!!</button></td>          
+                <td><button id="corregir" class="btn btn-light" onclick="correccion(3)">A por todas!!!</button></td></td>
+            </tr>
+            <tr>
+                <td></td>       
+                <td><button class="personaliza" onclick="rutinas()">Personaliza tu rutina</button></td>       
+            </tr>
+        </table>
+        
+        {% for rutina in rutinas %}
+            {% for ejercicio in ejercicios %}
+                {% if ejercicio.rutina == rutina %}
+                    <div id='{{ rutina.id }}'></div>
+                    <script>
+                        var array = document.getElementById('{{ rutina.id }}');
+                        array.innerHTML += ' <input type="hidden" id="rutina_{{ rutina.id }}" value="{{ rutina }}" />'
+                        array.innerHTML += ' <input type="hidden" name="ejercicios_{{ rutina.id }}[]" value="{{ ejercicio.ejercicio }}" />'
+                        array.innerHTML += ' <input type="hidden" name="repeticiones_{{ rutina.id }}_{{ ejercicio.ejercicio }}[]" value="{{ ejercicio.repeticiones }}" />'
+                    </script>
+
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+        <p></p>
+        <button class="btn btn-dark" onclick="history.back()">Atrás</button>
+    </td>
+
+    <script>
+        var websocket;
+        var userId = "{{request.user.id}}";
+        var arrayEjercicios = [];
+        var arrayRepeticiones = [];
+
+        window.onload = function () {
+
+            //wesocket connection and listeners
+            var loc = window.location;
+            var wsStart = 'ws://';
+
+            if (loc.protocol == 'https:') {
+                wsStart = 'wss://';
+            }
+
+            var websocketURL = '/correccion/ws/'+userId+'/';
+
+            var endPoint = wsStart + loc.host + websocketURL;
+
+            console.log('endPoint: ', endPoint);
+
+            websocket = new WebSocket(endPoint);
+
+            websocket.addEventListener('open', (e) => {
+                console.log('Connection Opened!');
+            });
+            websocket.addEventListener('message', (e) => {
+                //console.log('Message received: ', e.data);
+            });
+            websocket.addEventListener('close', (e) => {
+                console.log('Connection Closed!');
+            });
+            websocket.addEventListener('error', (e) => {
+                console.log('Error Occured!');
+            });
+        }
+
+        function correccion(rutina_id) {
+
+            var ejercicios = document.getElementsByName('ejercicios_'+ rutina_id +'[]');
+        
+            for (var i = 0; i < ejercicios.length; i++) {
+                var ej = ejercicios[i].value;
+                var repeticiones = document.getElementsByName('repeticiones_'+ rutina_id +'_'+ ej +'[]')[0].value;
+                arrayEjercicios.push(ej);
+                arrayRepeticiones[ej] = repeticiones;
+            }
+
+            var series = 3;
+            var rutina = document.getElementById('rutina_'+ rutina_id).value;
+            $('#form_rutina_name').val(rutina);
+
+            try {
+                websocket.send(JSON.stringify({
+                    'control': 'info',
+                    'datos': {
+                        'ejercicios':arrayEjercicios,
+                        'repeticiones':arrayRepeticiones,
+                        'series':series,
+                    }                    
+                }));
+
+            } catch (e) {
+                console.log("error");
+                console.log(e);
+            }
+            
+            var url = "{% url 'correccion_por_defecto' 1234 %}".replace(/1234/, rutina);
+            window.open(url, "_self"); // "_self" Abre en la misma ventana la corrección
+
+        }
+
+        function rutinas() {
+            window.open("{% url 'rutinas' request.user.id %}", "_self");
+        }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/rutinas_home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/logros.css' %}">
+    <link rel="stylesheet" href="{% static 'css/directos_home.css' %}">
+
+    
+
+    <td class="container">
+        <table width=90% style="margin: 0 auto; margin-top: 1%; margin-bottom: 1%;">
+            <tbody id="table">
+                <tr id="table-title">
+                    <td class="col">Lista de clases en directo ahora</td>
+                </tr>
+                <tr id = "form-container" class="float-left" style="display:none; visibility: hidden;">
+                    <td id = "form-card" class="card">
+                        <form action="" method="post">
+                            <p id="form-title">Crea tu sala</p>
+                            {% csrf_token %}
+                            <input type="text" id = "input_name" name = "nombre" style = "display:none; visibility: hidden;">
+                            <input type="text" id = "input_name_display" name = "nombre_display" placeholder="Nombre de la sala">
+                            <input type="text" id = "input_descripcion" name = "descripcion" placeholder="Descripción">
+                        </form>
+                        <button id="btn-create-room" class="btn btn-light">Crear sala</button>
+                    </td>
+                </tr>
+                {% for room in rooms%}
+                <tr class="card float-left">
+                    <td class="card-block">
+                        <h5 class="card-title">{{room.nombre_display}}</h5>
+                        {% if request.user.get_tipo_display == 'cliente' %}
+                        <button id="{{room.nombre}}" class="btn btn-light" onclick="room(this.id)" style="float: right;">Unirse</button>
+                        {% endif %}
+                        <p style="float: left;">{{room.descripcion}}</p>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </td>
+
+    <button class="btn btn-dark" onclick="history.back()">Atrás</button>
+
+    <script>
+        var usertype = "{{request.user.get_tipo_display}}";
+        var error = '{{error}}';
+        function room(clicked_id){
+            var url = "{% url 'directos_room' 'room' %}".replace('room', clicked_id);
+            window.open(url, "_self");
+        }
+    </script>
+    <script type="text/javascript" src="{% static 'js/directos_home.js' %}"></script>
+
+{% endblock %}
